@@ -13,14 +13,17 @@ var PLAYER_MOVE_UP = -CANVAS_BRICK_VERTICAL_SIZE;
 var PLAYER_MOVE_RIGHT = CANVAS_BRICK_HORIZONTAL_SIZE;
 var PLAYER_MOVE_DOWN = CANVAS_BRICK_VERTICAL_SIZE;
 
-var ENEMY_SPRITE = "images/enemy-bug.png";
-var ENEMY_START_X_LOCATION = -100;
+var ENEMY_RIGHT_SPRITE = "images/enemy-bug.png";
+var ENEMY_LEFT_SPRITE = "images/enemy-bug-left.png";
+var ENEMY_RIGHT_START_X_LOCATION = -100;
+var ENEMY_LEFT_START_X_LOCATION = 500;
 var ENEMY_START_Y_LOCATION_TOP = 50;
+var ENEMY_START_Y_LOCATION_MIDDLE = 130;
 var ENEMY_START_Y_LOCATION_BOTTOM = 210;
 var ENEMY_MIN_SPEED = 100;
 var ENEMY_MAX_SPEED = 400;
-
-var NUM_ENEMIES_TO_SPAWN = 10;
+var ENEMY_DIRECTION_RIGHT = "right";
+var ENEMY_DIRECTION_LEFT = "left";
 
 var KEYCODE_LEFT = "left";
 var KEYCODE_UP = "up";
@@ -32,16 +35,24 @@ function randomNumberBetween(min, max) {
 }
 
 // Enemies our player must avoid
-var Enemy = function (startLocation) {
+var Enemy = function (x, y, direction) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
-  this.sprite = ENEMY_SPRITE;
-  this.x = startLocation;
-  this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
+  if (direction === ENEMY_DIRECTION_RIGHT) {
+    this.sprite = ENEMY_RIGHT_SPRITE;
+  } else if (direction === ENEMY_DIRECTION_LEFT) {
+    this.sprite = ENEMY_LEFT_SPRITE;
+  }
+
+  this.xSpawn = x;
+  this.ySpawn = y;
+  this.x = x;
+  this.y = y;
   this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
+  this.direction = direction;
 };
 
 // Update the enemy's position, required method for game
@@ -50,7 +61,11 @@ Enemy.prototype.update = function (dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
-  this.x += this.speed * dt;
+  if (this.direction === ENEMY_DIRECTION_RIGHT) {
+    this.x += this.speed * dt;
+  } else {
+    this.x -= this.speed * dt;
+  }
   this.checkPlayerCollision();
   this.checkForRespawn();
 };
@@ -66,9 +81,13 @@ Enemy.prototype.checkPlayerCollision = function () {
 };
 
 Enemy.prototype.checkForRespawn = function () {
-  if (this.x > (CANVAS_WIDTH + CANVAS_BRICK_HORIZONTAL_SIZE)) {
-    this.x = ENEMY_START_X_LOCATION;
-    this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
+  if (this.direction === ENEMY_DIRECTION_RIGHT && this.x > (CANVAS_WIDTH + CANVAS_BRICK_HORIZONTAL_SIZE)) {
+    this.x = this.xSpawn;
+    this.y = this.ySpawn;
+    this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
+  } else if (this.direction === ENEMY_DIRECTION_LEFT && this.x < -CANVAS_BRICK_HORIZONTAL_SIZE) {
+    this.x = this.xSpawn;
+    this.y = this.ySpawn;
     this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
   }
 };
@@ -114,10 +133,11 @@ Player.prototype.checkWallCollision = function () {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-allEnemies = [];
-for (var i = 0; i < NUM_ENEMIES_TO_SPAWN; i++) {
-  allEnemies.push(new Enemy(ENEMY_START_X_LOCATION - ((i + 1) * (CANVAS_BRICK_HORIZONTAL_SIZE - 2))));
-}
+allEnemies = [
+    new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_TOP, ENEMY_DIRECTION_RIGHT),
+    new Enemy(ENEMY_LEFT_START_X_LOCATION, ENEMY_START_Y_LOCATION_MIDDLE, ENEMY_DIRECTION_LEFT),
+    new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_BOTTOM, ENEMY_DIRECTION_RIGHT)
+];
 
 var player = new Player();
 
