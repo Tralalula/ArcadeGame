@@ -11,6 +11,8 @@ var PLAYER_MOVE_DOWN = 100;
 var ENEMY_START_X_LOCATION = -100;
 var ENEMY_START_Y_LOCATION_TOP = 50;
 var ENEMY_START_Y_LOCATION_BOTTOM = 210;
+var ENEMY_MIN_SPEED = 100;
+var ENEMY_MAX_SPEED = 400;
 
 var KEYCODE_LEFT = "left";
 var KEYCODE_UP = "up";
@@ -26,8 +28,9 @@ var Enemy = function () {
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
-  this.x = 0;
+  this.x = ENEMY_START_X_LOCATION;
   this.y = Math.floor(Math.random() * ((ENEMY_START_Y_LOCATION_BOTTOM - ENEMY_START_Y_LOCATION_TOP) + 1)) + ENEMY_START_Y_LOCATION_TOP;
+  this.speed = Math.floor(Math.random() * ((ENEMY_MAX_SPEED - ENEMY_MIN_SPEED) + 1)) + ENEMY_MIN_SPEED;
 };
 
 // Update the enemy's position, required method for game
@@ -36,6 +39,7 @@ Enemy.prototype.update = function (dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
+  this.x += this.speed * dt;
 };
 
 // Draw the enemy on the screen, required method for game
