@@ -1,3 +1,6 @@
+var CANVAS_WIDTH = 400;
+var CANVAS_HEIGHT = 400;
+
 var PLAYER_START_X_LOCATION = 200;
 var PLAYER_START_Y_LOCATION = 400;
 var PLAYER_MOVE_LEFT = -100;
@@ -43,18 +46,25 @@ var Player = function () {
 };
 
 Player.prototype.update = function (dt) {
-
+  this.checkWallCollision();
 };
 
 Player.prototype.render = function () {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(keyCode) {
+Player.prototype.handleInput = function (keyCode) {
   if (keyCode === KEYCODE_LEFT) this.x += PLAYER_MOVE_LEFT;
   if (keyCode === KEYCODE_UP) this.y += PLAYER_MOVE_UP;
   if (keyCode === KEYCODE_RIGHT) this.x += PLAYER_MOVE_RIGHT;
   if (keyCode === KEYCODE_DOWN) this.y += PLAYER_MOVE_DOWN;
+};
+
+Player.prototype.checkWallCollision = function () {
+  if (this.x > CANVAS_WIDTH) this.x = CANVAS_WIDTH;
+  if (this.x < 0) this.x = 0;
+  if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
+  if (this.y < 0) this.y = 0;
 };
 
 // Now instantiate your objects.
