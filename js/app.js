@@ -1,17 +1,9 @@
-var SCORE_ID = "score";
-var SCORE_TEXT = "Score: ";
-var CURRENT_SCORE = 0;
-
-var LIFE_ID = "life";
-var LIFE_TEXT = "Lives left: ";
 var NUM_OF_LIVES = 3;
 
 var CANVAS_WIDTH = 400;
 var CANVAS_HEIGHT = 400;
-var CANVAS_NUM_ROWS = 6;
-var CANVAS_NUM_COLS = 5;
-var CANVAS_BRICK_HORIZONTAL_SIZE = (CANVAS_WIDTH / (CANVAS_NUM_COLS - 1));
-var CANVAS_BRICK_VERTICAL_SIZE = (CANVAS_HEIGHT / (CANVAS_NUM_ROWS - 1));
+var CANVAS_BRICK_HORIZONTAL_SIZE = 101;
+var CANVAS_BRICK_VERTICAL_SIZE = 83;
 
 var PLAYER_SPRITE = "images/char-boy.png";
 var PLAYER_START_X_LOCATION = 200;
@@ -70,7 +62,6 @@ Enemy.prototype.checkPlayerCollision = function () {
       (this.y <= (player.y + (CANVAS_BRICK_VERTICAL_SIZE / 2)))) {
     player.y = PLAYER_START_Y_LOCATION;
     NUM_OF_LIVES -= 1;
-    document.getElementById(LIFE_ID).innerHTML = LIFE_TEXT + NUM_OF_LIVES.toString();
   }
 };
 
@@ -117,8 +108,6 @@ Player.prototype.checkWallCollision = function () {
   if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
   if (this.y < 0) {
     this.y = CANVAS_HEIGHT;
-    CURRENT_SCORE += 1;
-    document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
   }
 };
 
@@ -144,10 +133,3 @@ document.addEventListener('keyup', function (e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
 });
-
-function init() {
-  document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
-  document.getElementById(LIFE_ID).innerHTML = LIFE_TEXT + NUM_OF_LIVES.toString();
-}
-
-init();
