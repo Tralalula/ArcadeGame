@@ -19,6 +19,9 @@ var KEYCODE_UP = "up";
 var KEYCODE_RIGHT = "right";
 var KEYCODE_DOWN = "down";
 
+function randomNumberBetween(min, max) {
+  return Math.floor(Math.random() * ((max - min) + 1)) + min;
+}
 
 // Enemies our player must avoid
 var Enemy = function () {
@@ -29,8 +32,8 @@ var Enemy = function () {
   // a helper we've provided to easily load images
   this.sprite = 'images/enemy-bug.png';
   this.x = ENEMY_START_X_LOCATION;
-  this.y = Math.floor(Math.random() * ((ENEMY_START_Y_LOCATION_BOTTOM - ENEMY_START_Y_LOCATION_TOP) + 1)) + ENEMY_START_Y_LOCATION_TOP;
-  this.speed = Math.floor(Math.random() * ((ENEMY_MAX_SPEED - ENEMY_MIN_SPEED) + 1)) + ENEMY_MIN_SPEED;
+  this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
+  this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 };
 
 // Update the enemy's position, required method for game
