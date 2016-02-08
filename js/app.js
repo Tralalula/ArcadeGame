@@ -7,7 +7,7 @@ var CANVAS_BRICK_VERTICAL_SIZE = (CANVAS_HEIGHT / (CANVAS_NUM_ROWS - 1));
 
 var PLAYER_SPRITE = "images/char-boy.png";
 var PLAYER_START_X_LOCATION = 200;
-var PLAYER_START_Y_LOCATION = 320;
+var PLAYER_START_Y_LOCATION = 400;
 var PLAYER_MOVE_LEFT = -CANVAS_BRICK_HORIZONTAL_SIZE;
 var PLAYER_MOVE_UP = -CANVAS_BRICK_VERTICAL_SIZE;
 var PLAYER_MOVE_RIGHT = CANVAS_BRICK_HORIZONTAL_SIZE;
@@ -20,24 +20,27 @@ var ENEMY_START_Y_LOCATION_BOTTOM = 210;
 var ENEMY_MIN_SPEED = 100;
 var ENEMY_MAX_SPEED = 400;
 
+var NUM_ENEMIES_TO_SPAWN = 10;
+
 var KEYCODE_LEFT = "left";
 var KEYCODE_UP = "up";
 var KEYCODE_RIGHT = "right";
 var KEYCODE_DOWN = "down";
+
 
 function randomNumberBetween(min, max) {
   return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }
 
 // Enemies our player must avoid
-var Enemy = function () {
+var Enemy = function (x) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = ENEMY_SPRITE;
-  this.x = ENEMY_START_X_LOCATION;
+  this.x = x;
   this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
   this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 };
@@ -50,11 +53,7 @@ Enemy.prototype.update = function (dt) {
   // all computers.
   this.x += this.speed * dt;
   this.checkPlayerCollision();
-  if (this.x > CANVAS_WIDTH + 100) {
-    this.x = ENEMY_START_X_LOCATION;
-    this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
-    this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
-  }
+  this.checkForRespawn();
 };
 
 Enemy.prototype.checkPlayerCollision = function () {
@@ -63,6 +62,14 @@ Enemy.prototype.checkPlayerCollision = function () {
       (this.y >= (player.y - (CANVAS_BRICK_VERTICAL_SIZE / 2))) &&
       (this.y <= (player.y + (CANVAS_BRICK_VERTICAL_SIZE / 2)))) {
     player.y = PLAYER_START_Y_LOCATION;
+  }
+};
+
+Enemy.prototype.checkForRespawn = function () {
+  if (this.x > (CANVAS_WIDTH + CANVAS_BRICK_HORIZONTAL_SIZE)) {
+    this.x = ENEMY_START_X_LOCATION;
+    this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
+    this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
   }
 };
 
@@ -105,9 +112,10 @@ Player.prototype.checkWallCollision = function () {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-allEnemies = [
-  new Enemy()
-];
+allEnemies = [];
+for (var i = 0; i < NUM_ENEMIES_TO_SPAWN; i++) {
+  allEnemies.push(new Enemy(ENEMY_START_X_LOCATION - ((i + 1) * CANVAS_BRICK_HORIZONTAL_SIZE)));
+}
 
 var player = new Player();
 
