@@ -2,6 +2,10 @@ var SCORE_ID = "score";
 var SCORE_TEXT = "Score: ";
 var CURRENT_SCORE = 0;
 
+var LIFE_ID = "life";
+var LIFE_TEXT = "Lives left: ";
+var NUM_OF_LIVES = 3;
+
 var CANVAS_WIDTH = 400;
 var CANVAS_HEIGHT = 400;
 var CANVAS_NUM_ROWS = 6;
@@ -65,6 +69,8 @@ Enemy.prototype.checkPlayerCollision = function () {
       (this.y >= (player.y - (CANVAS_BRICK_VERTICAL_SIZE / 2))) &&
       (this.y <= (player.y + (CANVAS_BRICK_VERTICAL_SIZE / 2)))) {
     player.y = PLAYER_START_Y_LOCATION;
+    NUM_OF_LIVES -= 1;
+    document.getElementById(LIFE_ID).innerHTML = LIFE_TEXT + NUM_OF_LIVES.toString();
   }
 };
 
@@ -111,7 +117,6 @@ Player.prototype.checkWallCollision = function () {
   if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
   if (this.y < 0) {
     this.y = CANVAS_HEIGHT;
-    console.log("meow");
     CURRENT_SCORE += 1;
     document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
   }
@@ -127,12 +132,6 @@ for (var i = 0; i < NUM_ENEMIES_TO_SPAWN; i++) {
 
 var player = new Player();
 
-function init() {
-  document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
-}
-
-init();
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
@@ -145,3 +144,10 @@ document.addEventListener('keyup', function (e) {
 
   player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function init() {
+  document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
+  document.getElementById(LIFE_ID).innerHTML = LIFE_TEXT + NUM_OF_LIVES.toString();
+}
+
+init();
