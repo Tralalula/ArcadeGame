@@ -1,6 +1,7 @@
 var CANVAS_WIDTH = 400;
 var CANVAS_HEIGHT = 400;
 
+var PLAYER_SPRITE = "images/char-boy.png";
 var PLAYER_START_X_LOCATION = 200;
 var PLAYER_START_Y_LOCATION = 400;
 var PLAYER_MOVE_LEFT = -100;
@@ -8,6 +9,7 @@ var PLAYER_MOVE_UP = -100;
 var PLAYER_MOVE_RIGHT = 100;
 var PLAYER_MOVE_DOWN = 100;
 
+var ENEMY_SPRITE = "images/enemy-bug.png";
 var ENEMY_START_X_LOCATION = -100;
 var ENEMY_START_Y_LOCATION_TOP = 50;
 var ENEMY_START_Y_LOCATION_BOTTOM = 210;
@@ -30,7 +32,7 @@ var Enemy = function () {
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
-  this.sprite = 'images/enemy-bug.png';
+  this.sprite = ENEMY_SPRITE;
   this.x = ENEMY_START_X_LOCATION;
   this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
   this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
@@ -54,7 +56,7 @@ Enemy.prototype.render = function () {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function () {
-  this.sprite = 'images/char-boy.png';
+  this.sprite = PLAYER_SPRITE;
   this.x = PLAYER_START_X_LOCATION;
   this.y = PLAYER_START_Y_LOCATION;
 };
