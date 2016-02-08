@@ -50,6 +50,11 @@ Enemy.prototype.update = function (dt) {
   // all computers.
   this.x += this.speed * dt;
   this.checkPlayerCollision();
+  if (this.x > CANVAS_WIDTH + 100) {
+    this.x = ENEMY_START_X_LOCATION;
+    this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
+    this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
+  }
 };
 
 Enemy.prototype.checkPlayerCollision = function () {
@@ -100,7 +105,9 @@ Player.prototype.checkWallCollision = function () {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-allEnemies = [new Enemy()];
+allEnemies = [
+  new Enemy()
+];
 
 var player = new Player();
 
