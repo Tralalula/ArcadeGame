@@ -1,3 +1,7 @@
+var SCORE_ID = "score";
+var SCORE_TEXT = "Score: ";
+var CURRENT_SCORE = 0;
+
 var CANVAS_WIDTH = 400;
 var CANVAS_HEIGHT = 400;
 var CANVAS_NUM_ROWS = 6;
@@ -27,20 +31,19 @@ var KEYCODE_UP = "up";
 var KEYCODE_RIGHT = "right";
 var KEYCODE_DOWN = "down";
 
-
 function randomNumberBetween(min, max) {
   return Math.floor(Math.random() * ((max - min) + 1)) + min;
 }
 
 // Enemies our player must avoid
-var Enemy = function (x) {
+var Enemy = function (startLocation) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
   this.sprite = ENEMY_SPRITE;
-  this.x = x;
+  this.x = startLocation;
   this.y = randomNumberBetween(ENEMY_START_Y_LOCATION_TOP, ENEMY_START_Y_LOCATION_BOTTOM);
   this.speed = randomNumberBetween(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 };
@@ -106,7 +109,12 @@ Player.prototype.checkWallCollision = function () {
   if (this.x > CANVAS_WIDTH) this.x = CANVAS_WIDTH;
   if (this.x < 0) this.x = 0;
   if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
-  if (this.y < 0) this.y = 0;
+  if (this.y < 0) {
+    this.y = CANVAS_HEIGHT;
+    console.log("meow");
+    CURRENT_SCORE += 1;
+    document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
+  }
 };
 
 // Now instantiate your objects.
@@ -114,10 +122,16 @@ Player.prototype.checkWallCollision = function () {
 // Place the player object in a variable called player
 allEnemies = [];
 for (var i = 0; i < NUM_ENEMIES_TO_SPAWN; i++) {
-  allEnemies.push(new Enemy(ENEMY_START_X_LOCATION - ((i + 1) * CANVAS_BRICK_HORIZONTAL_SIZE)));
+  allEnemies.push(new Enemy(ENEMY_START_X_LOCATION - ((i + 1) * (CANVAS_BRICK_HORIZONTAL_SIZE - 2))));
 }
 
 var player = new Player();
+
+function init() {
+  document.getElementById(SCORE_ID).innerHTML = SCORE_TEXT + CURRENT_SCORE.toString();
+}
+
+init();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
