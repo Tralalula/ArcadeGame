@@ -15,6 +15,14 @@
  */
 
 var Engine = (function (global) {
+  var imageCharBoy = "images/char-boy.png";
+  var imageEnemyBug = "images/enemy-bug.png";
+  var imageEnemyBugLeft = "images/enemy-bug-left.png";
+  var imageGrassBlock = "images/grass-block.png";
+  var imageStoneBlock = "images/stone-block.png";
+  var imageWaterBlock = "images/water-block.png";
+
+
   /* Predefine the variables we'll be using within this scope,
    * create the canvas element, grab the 2D context for that canvas
    * set the canvas elements height/width and add it to the DOM.
@@ -107,24 +115,28 @@ var Engine = (function (global) {
     /* This array holds the relative URL to the image used
      * for that particular row of the game level.
      */
-    var rowImages = [
-          'images/water-block.png',
-          'images/grass-block.png',
-          'images/grass-block.png',
-          'images/grass-block.png',
-          'images/stone-block.png',
-          'images/stone-block.png'
-        ],
-        numRows = 6,
-        numCols = 5,
-        row, col;
+    var wB = imageWaterBlock;
+    var sB = imageStoneBlock;
+    var gB = imageGrassBlock;
+
+    var matrixImages = [
+      [wB, wB, wB, wB, sB],
+      [gB, gB, gB, gB, gB],
+      [gB, gB, gB, gB, gB],
+      [gB, gB, gB, gB, gB],
+      [sB, sB, sB, sB, sB],
+      [sB, sB, sB, sB, sB]
+    ];
+
+    var numRows = 6;
+    var numCols = 5;
 
     /* Loop through the number of rows and columns we've defined above
      * and, using the rowImages array, draw the correct image for that
      * portion of the "grid"
      */
-    for (row = 0; row < numRows; row++) {
-      for (col = 0; col < numCols; col++) {
+    for (var row = 0; row < numRows; row++) {
+      for (var col = 0; col < numCols; col++) {
         /* The drawImage function of the canvas' context element
          * requires 3 parameters: the image to draw, the x coordinate
          * to start drawing and the y coordinate to start drawing.
@@ -132,7 +144,7 @@ var Engine = (function (global) {
          * so that we get the benefits of caching these images, since
          * we're using them over and over.
          */
-        ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+        ctx.drawImage(Resources.get(matrixImages[row][col]), col * 101, row * 83);
       }
     }
 
@@ -167,12 +179,12 @@ var Engine = (function (global) {
    * all of these images are properly loaded our game will start.
    */
   Resources.load([
-    'images/stone-block.png',
-    'images/water-block.png',
-    'images/grass-block.png',
-    'images/enemy-bug.png',
-    'images/enemy-bug-left.png',
-    'images/char-boy.png'
+    imageStoneBlock,
+    imageWaterBlock,
+    imageGrassBlock,
+    imageEnemyBug,
+    imageEnemyBugLeft,
+    imageCharBoy
   ]);
   Resources.onReady(init);
 
