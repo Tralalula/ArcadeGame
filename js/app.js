@@ -2,14 +2,16 @@ var CANVAS_WIDTH = 400;
 var CANVAS_HEIGHT = 400;
 var CANVAS_NUM_ROWS = 6;
 var CANVAS_NUM_COLS = 5;
+var CANVAS_BRICK_HORIZONTAL_SIZE = (CANVAS_WIDTH / (CANVAS_NUM_COLS - 1));
+var CANVAS_BRICK_VERTICAL_SIZE = (CANVAS_HEIGHT / (CANVAS_NUM_ROWS - 1));
 
 var PLAYER_SPRITE = "images/char-boy.png";
 var PLAYER_START_X_LOCATION = 200;
-var PLAYER_START_Y_LOCATION = 400;
-var PLAYER_MOVE_LEFT = -(CANVAS_WIDTH / (CANVAS_NUM_COLS - 1));
-var PLAYER_MOVE_UP = -(CANVAS_HEIGHT / (CANVAS_NUM_ROWS - 1));
-var PLAYER_MOVE_RIGHT = (CANVAS_WIDTH / (CANVAS_NUM_COLS - 1));
-var PLAYER_MOVE_DOWN = (CANVAS_HEIGHT / (CANVAS_NUM_ROWS - 1));
+var PLAYER_START_Y_LOCATION = 320;
+var PLAYER_MOVE_LEFT = -CANVAS_BRICK_HORIZONTAL_SIZE;
+var PLAYER_MOVE_UP = -CANVAS_BRICK_VERTICAL_SIZE;
+var PLAYER_MOVE_RIGHT = CANVAS_BRICK_HORIZONTAL_SIZE;
+var PLAYER_MOVE_DOWN = CANVAS_BRICK_VERTICAL_SIZE;
 
 var ENEMY_SPRITE = "images/enemy-bug.png";
 var ENEMY_START_X_LOCATION = -100;
@@ -47,6 +49,16 @@ Enemy.prototype.update = function (dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
   this.x += this.speed * dt;
+  this.checkPlayerCollision();
+};
+
+Enemy.prototype.checkPlayerCollision = function () {
+  if ((this.x >= (player.x - (CANVAS_BRICK_HORIZONTAL_SIZE / 2))) &&
+      (this.x <= (player.x + (CANVAS_BRICK_HORIZONTAL_SIZE / 2))) &&
+      (this.y >= (player.y - (CANVAS_BRICK_VERTICAL_SIZE / 2))) &&
+      (this.y <= (player.y + (CANVAS_BRICK_VERTICAL_SIZE / 2)))) {
+    player.y = PLAYER_START_Y_LOCATION;
+  }
 };
 
 // Draw the enemy on the screen, required method for game
