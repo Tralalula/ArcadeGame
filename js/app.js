@@ -1,5 +1,14 @@
 var PLAYER_START_X_LOCATION = 200;
 var PLAYER_START_Y_LOCATION = 400;
+var PLAYER_MOVE_LEFT = -100;
+var PLAYER_MOVE_UP = -100;
+var PLAYER_MOVE_RIGHT = 100;
+var PLAYER_MOVE_DOWN = 100;
+
+var KEYCODE_LEFT = "left";
+var KEYCODE_UP = "up";
+var KEYCODE_RIGHT = "right";
+var KEYCODE_DOWN = "down";
 
 // Enemies our player must avoid
 var Enemy = function () {
@@ -42,7 +51,10 @@ Player.prototype.render = function () {
 };
 
 Player.prototype.handleInput = function(keyCode) {
-
+  if (keyCode === KEYCODE_LEFT) this.x += PLAYER_MOVE_LEFT;
+  if (keyCode === KEYCODE_UP) this.y += PLAYER_MOVE_UP;
+  if (keyCode === KEYCODE_RIGHT) this.x += PLAYER_MOVE_RIGHT;
+  if (keyCode === KEYCODE_DOWN) this.y += PLAYER_MOVE_DOWN;
 };
 
 // Now instantiate your objects.
@@ -56,10 +68,10 @@ var player = new Player();
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
   var allowedKeys = {
-    37: 'left',
-    38: 'up',
-    39: 'right',
-    40: 'down'
+    37: KEYCODE_LEFT,
+    38: KEYCODE_UP,
+    39: KEYCODE_RIGHT,
+    40: KEYCODE_DOWN
   };
 
   player.handleInput(allowedKeys[e.keyCode]);
