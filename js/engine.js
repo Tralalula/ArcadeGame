@@ -21,6 +21,9 @@ var Engine = (function (global) {
   var imageGrassBlock = "images/grass-block.png";
   var imageStoneBlock = "images/stone-block.png";
   var imageWaterBlock = "images/water-block.png";
+  var imageSelector = "images/Selector.png";
+  var imageStar = "images/Star.png";
+  var imageKey = "images/Key.png";
 
 
   /* Predefine the variables we'll be using within this scope,
@@ -184,7 +187,10 @@ var Engine = (function (global) {
     imageGrassBlock,
     imageEnemyBug,
     imageEnemyBugLeft,
-    imageCharBoy
+    imageCharBoy,
+    imageSelector,
+    imageStar,
+    imageKey
   ]);
   Resources.onReady(init);
 

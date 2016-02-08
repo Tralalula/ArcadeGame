@@ -66,7 +66,7 @@ Enemy.prototype.update = function (dt) {
   } else {
     this.x -= this.speed * dt;
   }
-  this.checkPlayerCollision();
+  //this.checkPlayerCollision();
   this.checkForRespawn();
 };
 
@@ -111,6 +111,7 @@ Player.prototype.update = function (dt) {
 };
 
 Player.prototype.render = function () {
+  ctx.drawImage(Resources.get('images/Key.png'), 427.5, 17.5, 50.5, 85.5);
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -122,11 +123,13 @@ Player.prototype.handleInput = function (keyCode) {
 };
 
 Player.prototype.checkWallCollision = function () {
-  if (this.x > CANVAS_WIDTH) this.x = CANVAS_WIDTH;
-  if (this.x < 0) this.x = 0;
-  if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
-  if (this.y < 0) {
-    this.y = CANVAS_HEIGHT;
+  //if (this.y < 0 && this.x > (CANVAS_WIDTH - CANVAS_BRICK_HORIZONTAL_SIZE)) this.y = CANVAS_HEIGHT;
+  if (this.y <= 0 && this.x >= 300) this.y = 0;
+  else {
+    if (this.x > CANVAS_WIDTH) this.x = CANVAS_WIDTH;
+    if (this.x < 0) this.x = 0;
+    if (this.y > CANVAS_HEIGHT) this.y = CANVAS_HEIGHT;
+    if (this.y < 80) this.y = 80;
   }
 };
 
@@ -134,9 +137,9 @@ Player.prototype.checkWallCollision = function () {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 allEnemies = [
-    new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_TOP, ENEMY_DIRECTION_RIGHT),
-    new Enemy(ENEMY_LEFT_START_X_LOCATION, ENEMY_START_Y_LOCATION_MIDDLE, ENEMY_DIRECTION_LEFT),
-    new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_BOTTOM, ENEMY_DIRECTION_RIGHT)
+  new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_TOP, ENEMY_DIRECTION_RIGHT),
+  new Enemy(ENEMY_LEFT_START_X_LOCATION, ENEMY_START_Y_LOCATION_MIDDLE, ENEMY_DIRECTION_LEFT),
+  new Enemy(ENEMY_RIGHT_START_X_LOCATION, ENEMY_START_Y_LOCATION_BOTTOM, ENEMY_DIRECTION_RIGHT)
 ];
 
 var player = new Player();
